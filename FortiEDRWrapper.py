@@ -1,5 +1,5 @@
 #!/usr/bin/env Python
-__version__ = "0.1.0"
+__version__ = "0.2.0"
 
 import base64
 import requests
@@ -126,4 +126,93 @@ class FortiEDRWrapper:
                 raise e
         else:
             return response.json()
+        
+    def get_event_exceptions(self, params):
+        url = urllib.parse.urljoin(self.base_url, "/management-rest/exceptions/get-event-exceptions")
+        if self.organization:
+            params["organization"] = self.organization
+        try:
+            response = self.session.get(url, params=params, verify=self.verify_ssl)
+            response.raise_for_status()
+        except requests.exceptions.HTTPError as e:
+            if response.status_code == 400:
+                raise ValueError("Bad Request: The given parameters do not match the expected format or values range.")
+            elif response.status_code == 500:
+                raise ValueError("Internal Server Error: An unexpected error occurred. Contact Fortinet support.")
+            else:
+                response.raise_for_status()
+        else:
+            return response.json()
 
+    def get_event_exceptions(self, params):
+    url = urllib.parse.urljoin(self.base_url, "/management-rest/exceptions/get-event-exceptions")
+    if self.organization:
+        params["organization"] = self.organization
+    try:
+        response = self.session.get(url, params=params, verify=self.verify_ssl)
+        response.raise_for_status()
+    except requests.exceptions.HTTPError as e:
+        if response.status_code == 400:
+            raise ValueError("Bad Request: The given parameters do not match the expected format or values range.")
+        elif response.status_code == 500:
+            raise ValueError("Internal Server Error: An unexpected error occurred.")
+        else:
+            response.raise_for_status()
+    else:
+        return response.json()
+
+    
+    def delete_exception(self, params):
+    url = urllib.parse.urljoin(self.base_url, "/management-rest/exceptions/delete")
+    if self.organization:
+        params["organization"] = self.organization
+    try:
+        response = self.session.delete(url, params=params, verify=self.verify_ssl)
+        response.raise_for_status()
+    except requests.exceptions.HTTPError as e:
+        if response.status_code == 400:
+            raise ValueError("Bad Request: The given parameters do not match the expected format or values range.")
+        elif response.status_code == 500:
+            raise ValueError("Internal Server Error: An unexpected error occurred. Contact Fortinet support.")
+        else:
+            response.raise_for_status()
+    else:
+        return response.json()
+
+    
+    def list_exceptions(self, params):        
+    url = urllib.parse.urljoin(self.base_url, "/management-rest/exceptions/list-exceptions")    
+    if self.organization:
+        params["organization"] = self.organization        
+    try:
+        response = self.session.get(url, headers={"Content-Type": "application/json"}, params=params, verify=self.verify_ssl)
+        response.raise_for_status()
+    except requests.exceptions.HTTPError as e:
+        if response.status_code == 400:
+            raise ValueError("Bad Request: The given parameters do not match the expected format or values range.")
+        elif response.status_code == 500:
+            raise ValueError("Internal Server Error: An unexpected error occurred.")
+        else:
+            raise e
+    else:
+        return response.json()
+    
+    
+   def create_or_edit_exception(self, params, jsonData, confirm_edit=False):
+    url = urllib.parse.urljoin(self.base_url, "/management-rest/exceptions/create-or-edit-exception")
+    
+    if self.organization:
+        params["organization"] = self.organization
+        
+    try:
+        response = self.session.post(url, headers={"Content-Type": "application/json"}, params=params, json=jsonData, verify=self.verify_ssl)
+        response.raise_for_status()
+    except requests.exceptions.HTTPError as e:
+        if response.status_code == 400:
+            raise ValueError("Bad Request: The given parameters do not match the expected format or values range.")
+        elif response.status_code == 500:
+            raise ValueError("Internal Server Error: An unexpected error occurred.")
+        else:
+            raise e
+    else:
+        return response.json()
